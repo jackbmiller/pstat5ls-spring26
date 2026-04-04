@@ -4,6 +4,7 @@ subtitle: "Question 7"
 author: "Your Name Here"
 date: "Spring 2026"
 output: pdf_document
+urlcolor: blue
 header-includes:
   - \usepackage{mdframed}
 toc: TRUE
@@ -12,6 +13,10 @@ toc: TRUE
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+\
+
+**VERY IMPORTANT:** Remember to start by making a copy of this document, and only edit the copy - **leave this original file untouched** (so your files don't get overwritten every time the server updates). [Click here for instructions on how to do that.](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing)\
 
 Welcome to the first PSTAT 5LS homework! Please note that this is only **one question** of Homework 1; the remainder of the questions appear on Gradescope in an "Online Assignment" format. (Please see Canvas for further details).
 
