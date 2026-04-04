@@ -1,0 +1,167 @@
+---
+title: "PSTAT 5LS: Homework 01"
+subtitle: "Question 7"
+author: "Your Name Here"
+date: "Spring 2026"
+output: pdf_document
+header-includes:
+  - \usepackage{mdframed}
+toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to the first PSTAT 5LS homework! Please note that this is only **one question** of Homework 1; the remainder of the questions appear on Gradescope in an "Online Assignment" format. (Please see Canvas for further details).
+
+## Background: A Trip to the Movies
+
+The **Internet Movie Database** (IMdB) is a popular online website that compiles information about movies, TV shows, music videos, and more. As a courtesy to others, they provide open-source access to several datasets containing information about the titles listed on their site. In this problem, we will explore one such dataset that contains information on movies released since the year 2000.
+
+The Data Dictionary for this dataset is as follows:
+
+-   `primaryTitle`: the title of the film (in its original language)
+-   `startYear`: the year in which the film was released (aka the film's "release year")
+-   `runtimeMinutes`: the runtime (in minutes) of the film
+-   `genre1`, `genre2`, and `genre3`: the genres (multiple, if applicable) of the film
+-   `averageRating`: the average (mean) rating (out of 10) of the film
+-   `numVotes`: the number of votes that went into calculating the average from the `averageRating` variable
+
+If you are curious, you can access the original dataset (along with many others) at [this link](https://developer.imdb.com/non-commercial-datasets/), though kindly note that the version we are working with for this homework assignment has been significantly "cleaned" (making it easier to work with).
+
+## Part 0: Reading In the Data
+
+The first thing we need to do is read in our data! Most data is stored in a computer file that has a specific **filetype**, which essentially tells the computer how to delineate between different observations in the dataset. This filetype is indicated in the filename as whatever appears after the `.`; for example, an **R Markdown Document** (RMD) will always have a filename that ends in `.rmd`. 
+
+The dataset we're exploring in this question has a filetype known as a **comma-separated value** (CSV), which is why its filename (`movies.csv`) ends in `.csv`. The reason we bring this up is because different filetypes get "read in" (imported) to `R` differently! Because our dataset is stored in a CSV file, the `R` function we'll use to read it in is called `read.csv()`. 
+
+```{r}
+movies <- read.csv("movies.csv")
+```
+
+### **Question 1:** In words, describe what this code chunk is doing. 
+For example, is this assigning a value to a variable? If so, what is the variable name? What is being assigned to the variable? \
+
+\begin{mdframed}
+
+Replace this line with your answers
+
+\end{mdframed}
+
+## Part 1: Data Exploration
+
+When embarking on analysis of a dataset, it's usually a good idea to start by getting to know the dataset.
+
+### **Question 2:** How many titles are included in this dataset?
+
+**Hint:** Look up the help file for the `nrow()` function in `R`. (Recall, from Lab 01, how to look up the help file for an `R` function)
+
+```{r}
+## REPLACE THIS WITH YOUR ANSWERS
+```
+
+
+### **Question 3:** What is the most recent release year included in the dataset?
+
+**Hint:** Which variable do you think will help us answer this question? How can we access entries from _only_ that variable (think about Lab01)? What mathematical function/statistical summary can be then applied to the entries in that variable to obtain the _most recent_ release year?
+
+```{r}
+## REPLACE THIS WITH YOUR ANSWERS
+```
+
+
+### **Question 4:** What is the mean runtime (in minutes) across all movies included in the dataset?
+
+**Hint:** Look up the help file for the `mean()` function.
+
+```{r}
+## REPLACE THIS WITH YOUR ANSWERS
+```
+
+---
+
+Hmm, that's a bit odd - why is `R` telling us that the average runtime is "NA"? Well, it turns out that "not all data is created equal." Specifically, there are times where data is **missing** (potentially due to data misinput, or due to sources of systematic bias, or a variety of other reasons). We won't talk too much about missing data in this homework assignment, but for now just know that our `movies` dataset _does_ have some missing values that have been recorded as "NA" (which is a special symbol in `R` reserved for entries that are missing). 
+
+Statisticians and data scientists have developed a set of sophisticated tools for handling missing data, but for our purposes we will bypass all of them and simply amend Question 4 to be:
+
+### **Question 5:** What is the mean runtime (in minutes) across all movies with non-missing runtimes included in the dataset?
+
+**Hint:** Again, look up the help file for the `mean()` function and pay close attention to the `na.rm` argument.
+
+```{r}
+## REPLACE THIS WITH YOUR ANSWERS
+```
+
+## Part 2: Pretty Pictures
+
+Let's flex our knowledge of statistical visualizations! We haven't talked about how to code visualizations into `R` yet, so we'll be providing you with most of the code in this section and then ask you to interpret the resulting plots.
+
+### **Question 6:** Runtime vs. Year
+
+The following code chunk produces a **line graph** of how the **median** runtime of films changed over years. **You do not need to understand all of this code yet!**
+
+```{r}
+avg_runtimes <- c()
+for(k in sort(unique(movies$startYear))) {
+  avg_runtimes <- c(avg_runtimes, 
+                    median(movies[which(movies$startYear == k), "runtimeMinutes"],
+                           na.rm = T)
+  )
+}
+
+plot(sort(unique(movies$startYear)), 
+     avg_runtimes, type = "l",
+     col = "blue",
+     lwd = 2,
+     main = "Median Runtime across Years",
+     xlab = "Year",
+     ylab = "Median Runtime (minutes)")
+```
+
+**Interpret this plot.** Specifically: 
+
+-   How has the median runtime of films changed across years? 
+-   Was there a period of time where movies were (on average) shorter than in other years?
+
+
+\begin{mdframed}
+
+Replace this line with your answers
+
+\end{mdframed}
+
+
+
+### **Question 7:** Genres
+
+Finally, let's examine the distribution of genres represented in this dataset. We'll focus only on the genre listed in the `genre1` variable. **Again, you are NOT RESPONSIBLE for understanding this code (...yet)**
+
+```{r}
+movies$genre1 |> table() |>
+  barplot(las = 2,
+          main = "Barplot of Genres",
+          xlab = "Genre",
+          ylab = "Frequency")
+```
+
+**Which genre has the highest representation? Which genre(s) has/have the lowest representation?**
+
+\begin{mdframed}
+
+Replace this line with your answers
+
+\end{mdframed}
+
+
+---
+
+## Closing Instructions
+
+Congratulations on finishing! When you are done, please do the following:
+
+1)    Click the "Knit" button at the top of your RStudio screen (it should have an icon that looks like a ball of yarn). This will create a PDF out of your work.
+
+2)    Download your PDF (your TA will show you how to download files from the server during Lab on Monday/Tuesday).
+
+3)    Upload your PDF to the appropriate part of the Homework 1 assignment in Gradescope.
