@@ -1,0 +1,297 @@
+---
+title: "PSTAT 5LS Lab 01"
+author: "Professor Jack Miller, and Ethan Marzban"
+date: "Spring 2026"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(fontawesome)
+```
+
+
+## Learning Objectives
+
+### `R` Learning Objectives
+
+1)  Learn the difference between R, RStudio, and R Markdown
+2)  Learn how to use R to do basic calculations
+3)  Understand how R functions work
+4)  Learn how to compute some basic statistical summaries in R
+
+
+### Statistical Learning Objectives
+
+1)  Understand that technology can be helpful in statistics
+
+
+## Getting Sta-`R`-Ted
+
+### What is `R`?
+
+In Statistics, we often use computers to analyze data. There are a lot of
+"statistical computing environments" that can help you do statistical
+analyses. One of the most popular (and powerful) is called R. R is a
+programming language that is designed for manipulating data, doing
+calculations, and making graphical displays. R works by writing **R code**.
+
+That might sound scary, but don't worry: this is not a programming class.
+Over the course of the quarter, you'll learn how to edit and write some basic
+R code to help you analyze data to answer research questions. Our goal
+with PSTAT 5LS labs is to help you learn the basics of R and R coding, but
+through the lens of answering statistical questions.
+
+There are a lot of "R" words floating around. What's going on?
+
+-   _R_ is a "statistical computing environment" that's designed for manipulating data, generating plots, and performing analyses. It's also a programming language. You'll be using R this quarter.
+-   _RStudio_ is an "integrated development environment (IDE)" for R (you'll never have to hear the term IDE again in this class). Basically, RStudio is a pretty interface that makes working with R easier. You
+use R inside of RStudio. If R is ice cream, RStudio is the cone or cup.
+-   _R Markdown_ is a way to write pretty analysis reports that combines R
+code, R output (plots, analysis results, etc.) and text in one document. This lab document is an R Markdown document!
+
+
+### R Markdown
+
+R Markdown lets you combine text, R code, and plots in one pretty, reproducible report. If you're curious about this, you can find more details on using R Markdown at http://rmarkdown.rstudio.com.
+
+You'll explore an R Markdown document in greater detail in Question 7 of Homework 1.
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt1
+
+Periodically, we will ask you to run various pieces of code or modify various code chunks in this lab document. Here is our first one!
+
+```{r tryIt1, exercise = TRUE, error = T}
+# Use this code chunk to print the phrase "Hello World!" to the screen
+print("Hello world!")
+```
+</div>
+
+
+## Becoming a Code-`R`
+
+### Using `R` as a Calculator
+
+At its most basic, R is a fancy calculator. Let's try this out!
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt2
+```{r tryIt2, exercise = TRUE, error = T}
+# Use this code chunk to compute what 5 times 7 is (we use a star * for multiplication)
+
+
+```
+
+```{r tryIt2-solution}
+5 * 7
+```
+</div>
+
+
+When you run the chunk, you'll see a `[1]` before the output of 35. Just ignore this. The result is 35.
+
+All of the symbols you think you'd use to do math work: `+` for addition, `-` for subtraction, `*` for multiplication, `/` for division, `ˆ` for exponentiation.
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt3
+
+Use the code chunk below to calculate the value of $2^{10}$
+```{r tryIt3, exercise = TRUE, error = T}
+## Replace this line with your code
+```
+
+```{r tryIt3-solution}
+2^10
+```
+</div>
+
+### `R` Assginment Syntax
+
+Often, we want `R` to remember the results of a calculation so that we can use it later. We can give the result of some code a name by **assigning** it to something.
+
+```{r}
+x <- 36 / 6
+```
+
+We read that code as "x gets 36 / 6". The arrow is made using the less-than symbol (`<`, shift + comma on a US English keyboard) and a hyphen. 
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt4
+
+Before running the chunk below, try and guess what it will return. Then, run the chunk and see if you were correct!
+```{r tryIt4, exercise = TRUE, error = T}
+x <- 36 / 6
+x
+```
+</div>
+
+One important piece of information to keep in mind is that `R` is **case-sensitive.** For example, `x` and `X` are treated as two separate variables.
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt5
+
+Before running the chunk below, try and guess what it will return. Then, run the chunk and see if you were correct!
+```{r tryIt5, exercise = TRUE, error = T}
+x <- 36 / 6
+X
+```
+</div>
+
+### `R` Errors
+
+`R` errors are actually quite informative. For example, notice that when we ran `X` after assigning a value to `x`, `R` said "Error: object 'X' not found". That is, it is quite literally telling us that it doesn't know what `X` means - because we forgot to define it! 
+
+There are a few other types of errors `R` returns. Run the following cells to explore each of them.
+
+```{r badname1, exercise = TRUE, error = T}
+tik tok <- 12
+```
+
+```{r badname2, exercise = TRUE, error = T}
+4eva <- 4 * 2
+```
+
+```{r badname3, exercise = TRUE, error = T}
+_hi_mom <- 5^2
+```
+
+The errors saying "unexpected symbols" or "unexpected input" are R's way of telling you that these names are not allowed, and that you should use a different name. Here's how we’d correct these:
+
+```{r goodname1, exercise = TRUE, error = T}
+tiktok <- 12
+```
+
+```{r goodname2, exercise = TRUE, error = T}
+forever <- 4 * 2
+```
+
+```{r goodname3, exercise = TRUE, error = T}
+hi_mom <- 5^2
+```
+
+<div style="background-color:#eaf0e4">
+### `r fontawesome::fa("lightbulb")` ProTip
+If you want to simultaneously perform a variable assignment and also display the object being assigned to a variable, enclose the entire variable assignment statement in parentheses:
+
+```{r}
+(y <- 2 + 3)
+```
+</div>
+
+## Functions and Statistics in `R`
+
+We’ll be using R primarily through the use of functions. A function generally looks something like this:
+
+```{r eval = FALSE}
+function.name(argument1, argument2, ...)
+```
+
+Notice that we have the name of the function, followed immediately by an open parenthesis ‘(‘ without a space, then a sequence of arguments to the function, separated by commas ‘,‘, then a close parenthesis ')'. 
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt6
+
+The function `cos()` computes the cosine of its input. Use the code chunk below to calculate the value of $3^{\cos(4)}$, and assign it to a variable called `three_cos_four`
+
+```{r tryIt6, exercise = TRUE, error = T}
+## Replace this line with your code
+```
+
+```{r tryIt6-solution}
+three_cos_four <- 3 ^ cos(4)
+```
+</div>
+
+One of the many neat things about R is that it has functions that can help us perform statistical analyses and produce graphical summaries!
+
+Toward the end of Slide Set 1, we were exposed to some common measures of center: the **mean** and the **median**. Sure enough, R has functions that allow us to calculate both of these!
+
+-   `mean()` is used to calculate the mean of a list of numbers
+-   `median()` is used to calculate the median of a list of numbers
+
+<div style="background-color:#ede7d8">
+### `r fontawesome::fa("triangle-exclamation")` Caution
+In R, lists of numbers need to be inputted between a pair of parentheses with a "c" in front. So, for example,
+```{r, eval = F}
+c(1, 2, 3)
+```
+is a valid list of numbers, whereas
+```{r, eval = F}
+1, 2, 3
+```
+and
+```{r, eval = F}
+(1, 2, 3)
+```
+are **NOT**.
+
+</div>
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt7
+
+Calculate the mean and median of the set `1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13`. Don't forget the `c()` format to indicate a list of numbers in `R`!
+
+```{r tryIt7, exercise = TRUE, error = T}
+## Replace this line with your code
+```
+
+```{r tryIt7-solution}
+mean(c(1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13))
+median(c(1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13))
+```
+</div>
+
+Also in slide set 1, we were exposed to some graphical summaries. Sure enough, `R` comes equipped with functions to generate these! We'll be returning to these functions throughout the course, but for now let's play around with **histograms.**
+
+To make a histogram out of a single list of numbers in `R`, we use the `hist()` function.
+
+```{r}
+hist(c(1.1, 2.1, 2.2, 2.3, 5.5, 7, 12.1))
+```
+
+Notice how bad these axis labels and title are! To fix that, we can pass in additional **arguments** into our **call** (this is programming speak for "running" or "executing" a function) to `hist()`. Specifically:
+
+-   The `main` argument controls the title
+-   The `xlab` argument controls the _x_-axis label
+
+For example:
+
+```{r}
+hist(c(1.1, 2.1, 2.2, 2.3, 5.5, 7, 12.1),
+     main = "My First Histogram",
+     xlab = "data")
+```
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt8
+
+Generate a histogram from the list of numbers `1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13`. Title your plot "Histogram of Data", and include an _x_-label that says "values".
+
+```{r tryIt8, exercise = TRUE, error = T}
+## Replace this line with your code
+```
+
+```{r tryIt8-solution}
+hist(c(1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13),
+     main = "Histogram of Data",
+     xlab = "values")
+```
+</div>
+
+## What's Next?
+
+Congrats on finishing our  first PSTAT 5LS lab tutorial! Here's what you need to do next.
+
+1)    Navigate to the Lab01 folder on the PSTAT 5LS JupyterHub Server
+2)    Make a copy of the file called `lab01_postlab.Rmd`; rename your copy `lab01_NETID_postlab.Rmd` where you replace `NETID` with your NetID (for example, my file would be called `lab01_epmarzban_postlab.Rmd` since my NetID is `epmarzban`)
+3)    Fill out your copy of the Lab 01 Post-Lab.
+
+### Next Time
+
+During our next section meeting, we will explore some statistics collected by way of the survey we sent out over the weekend.
