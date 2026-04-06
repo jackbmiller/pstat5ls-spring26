@@ -271,7 +271,9 @@ hist(c(1.1, 2.1, 2.2, 2.3, 5.5, 7, 12.1),
 <div style="background-color:#dfedf7">
 ### `r fontawesome::fa("laptop-code")` TryIt8
 
-Generate a histogram from the list of numbers `1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13`. Title your plot "Histogram of Data", and include an _x_-label that says "values".
+Generate a histogram from the list of numbers `1, 2, 3, 4, 5, 5, 6, 7, 9, 12, 13`. Title your plot "Histogram of Data", and include an _x_-label that says "values". 
+
+<a style="color:red">**PLEASE NOTE:**</a> There is a known issue with this exercise (related to the server bandwidth, which is out of our control), so **do not try and run the code from within this tutorial.** Instead, write your code in the space below, and then copy-paste it into your Console on the server. \
 
 ```{r tryIt8, exercise = TRUE, error = T}
 ## Replace this line with your code
