@@ -1,0 +1,53 @@
+---
+title: "Lab 03 Post-Lab"
+author: "Your Name Here"
+date: "Spring 2026"
+output: pdf_document
+urlcolor: purple
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+Welcome to the Lab 03 Post-Lab! After every PSTAT 5LS lab, we will ask you to complete a "Post-Lab" which you will then turn in on Gradescope, and will be graded on completion. The two main goals for these post-labs are:
+
+1)    To give you a chance to review what you learned during the lab
+2)    To give you a chance to start writing notes you can refer to in the future
+
+**Important:** Remember to always make a copy of files in the server, and only edit the copies (so that your work doesn't accidentally get overwritten). Please consult [this document](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) for instructions on how to do that.
+
+### Three Things I learned in Lab 03 are:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+### Three Questions I have after completing Lab 03 are:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+### Three R Functions I learned in Lab 03 are:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+
+
+## Instructions for Submitting
+
+After filling out the above three sections:
+
+1)    Replace "Your Name Here" at the top of this document with your full name (as it appears on Canvas). 
+
+2)    Click "knit" at the top of your RStudio window (there should be an icon that looks like a ball of yarn). This will turn your document into a PDF
+
+3)    Follow the instructions under the "Downloading a PDF" Section of [this](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) document to download your PDF to your computer.
+
+4)    Upload the PDF of your work to Gradescope **by 11:59pm on Friday April 24, 2026**
+
