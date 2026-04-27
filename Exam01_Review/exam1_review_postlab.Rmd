@@ -1,0 +1,45 @@
+---
+title: "Exam 01 Section Review Post-Lab"
+author: "Your Name Here"
+date: "Spring 2026"
+output: pdf_document
+urlcolor: purple
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+**Important:** Remember to always make a copy of files in the server, and only edit the copies (so that your work doesn't accidentally get overwritten). Please consult [this document](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) for instructions on how to do that.
+
+### Here are three concepts from lecture that I feel pretty confident about my knowledge in:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+### Here are three concepts from lecture that I still don't feel confident about my knowledge in:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+### Here's how satisfied I am with my study habits for this exam:
+
+_Replace this line with your text_
+
+
+
+## Instructions for Submitting
+
+After filling out the above three sections:
+
+1)    Replace "Your Name Here" at the top of this document with your full name (as it appears on Canvas). 
+
+2)    Click "knit" at the top of your RStudio window (there should be an icon that looks like a ball of yarn). This will turn your document into a PDF
+
+3)    Follow the instructions under the "Downloading a PDF" Section of [this](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) document to download your PDF to your computer.
+
+4)    Upload the PDF of your work to Gradescope **by 11:59pm on Wednesday April 29, 2026**
+
