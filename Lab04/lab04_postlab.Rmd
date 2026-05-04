@@ -49,5 +49,5 @@ After filling out the above three sections:
 
 3)    Follow the instructions under the "Downloading a PDF" Section of [this](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) document to download your PDF to your computer.
 
-4)    Upload the PDF of your work to Gradescope **within 24 hours of the end of Lab.**
+4)    Upload the PDF of your work to Gradescope by **11:59pm on Wednesday May 6, 2026**
 
