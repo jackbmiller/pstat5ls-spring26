@@ -1,0 +1,569 @@
+---
+title: "PSTAT 5LS Lab 04"
+author: "Professor Jack Miller, and Ethan Marzban"
+date: "Spring 2026"
+output: 
+   learnr::tutorial:
+     pandoc_args: ["--katex"]
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(fontawesome)
+library(pstat5lsSBI)
+SE <- round(sqrt(0.70 * (1 - 0.70) / 750), 4)
+ci_center <- 66/150
+ci_se <- sqrt((66/150) * (1 - 66/150) / 150)
+set.seed(501)
+prop_pet_owners <- simulate_chance_model(chanceSuccess = 0.7,
+                                    numDraws = 750,
+                                    numRepetitions = 1000)
+```
+
+
+
+## Learning Objectives
+
+### `R` Learning Objectives
+
+1)    Work with `pnorm()` and `qnorm()`
+2)    Introduce `prop_test()` to understand test statistics and confidence intervals
+
+
+### Statistical Learning Objectives
+
+1)    Understand how area under the normal curve relates to probability.
+2)    Understand how to move between probabilities and quantiles of the normal distribution.
+3)    Build intuition for the relationship between simulated p-values and p-values which arise from a normal approximation.
+4)    Understand the standard normal distribution and its corresponding $z$ test statistic.
+5)    Understand how confidence intervals can provide an estimate for the true parameter.
+
+### Functions and Operations covered in this lab
+
+1)  `round()`
+2)  `plot_norm()`
+3)  `pnorm()`
+4)  `prop_test()`
+5)  `qnorm()`
+
+<div style="background-color:#ede7d8">
+### `r fontawesome::fa("triangle-exclamation")` Caution
+
+This tutorial includes a fair number of equations, which may not render properly. If you are having trouble viewing the equations, we recommend trying a different browser.
+</div>
+
+
+## Pet Ownership Example
+
+The American Pet Products Association found that a record high of 70% of all households in the United States had pets in 2020. A recent survey of 750 households found that 504 had at least one pet. Does the proportion of U.S. households with pets differ from 0.70?
+
+Our hypotheses to test if there is a difference are $$H_0: p = 0.70 \text{ and } H_A: p \neq 0.70$$
+where $p$ represents the proportion of all households that have at least one pet.
+
+The sample proportion is 
+$$ \hat{p} = \frac{504}{750} = 0.672$$
+
+
+### Normal Theory Conditions
+
+By the Central Limit Theorem (CLT), the sampling distribution of $\hat p$ will be approximately normal when we satisfy the following conditions:
+
+- \textbf{Independence:} The observations are independent of one another.
+- \textbf{Success-Failure:} We have at least 10 successes and 10 failures.
+
+  - For hypothesis tests, the Success-Failure condition is met when $np_0 \geq 10$ and $n(1 - p_0) \geq 10$
+  - For confidence intervals, the Success-Failure condition is met when $n \hat{p} \geq 10$ and $n (1 - \hat p) \geq 10$
+  
+Let's check the conditions for this example. We'll check the independence condition for you: since the 750 households are from a random sample, the observations will be independent of one another. Now it's your turn!
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt1
+
+After identifying the appropriate set of success-failure conditions to check, check them below, using the provided code chunk as a calculator.
+
+```{r tryIt1, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt1-solution}
+750 * (0.70)
+750 * (1 - 0.7)
+```
+</div>
+
+Since both conditions are satisfied, the the sampling distribution of $\hat{p}$ will be approximately
+$$
+N \left( \mu = 0.70,\; \sigma = \sqrt{\frac{0.70(1-0.70)}{750}} \right)
+$$
+
+### Visualizing the p-value
+
+We can calculate the standard error (SE) and visualize where our observed $\hat{p} = 0.672$ falls on the normal curve.
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt2
+
+Calculate the standard error of $\hat{p}$, round to 4 decimal places, and assign the result to a variable called `SE`. **Hint:** Look up the help file for the `round()` function. \
+
+**NOTE:** In general, you don't want to round values too prematurely. The main reason we're asking you to round this early on is to make the plot you generate in the next `TryIt` exercise look a little nicer, as the title it generates is automatically linked with the value you input for the standard error.
+
+```{r tryIt2, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt2-solution}
+SE <- round(sqrt(0.70 * (1 - 0.70) / 750), 4)
+```
+</div>
+
+
+Since we have a two-sided alternative hypothesis, we need to consider the other tail of the distribution as well.
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt3
+
+Look up the help file for the `plot_norm()` function from the `pstat5lsSBI` package; then, use this function to visualize the _p_-value. **Note:** You will need to do some calculations first, to figure out where the boundary/boundaries of the shaded region(s) should be!
+
+```{r tryIt3, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt3-solution}
+plot_norm(mean = 0.70, 
+          sd = SE,
+          shadeValues = c(0.672, 0.728), 
+          direction = "beyond", 
+          col.shade = "lightblue")
+```
+</div>
+
+## Calculating the _p_-value
+
+### Approach 1: Using `pnorm()`
+
+The function `pnorm()` allows us to calculate *p*robabilities under the *norm*al curve (hence the name `p` + `norm`). Specifically,
+
+```{r, eval = F}
+pnorm(x, mean = mu, sd = sigma)
+```
+
+calculates the area to the left of `x`, underneath a N(`mu`, `sigma`) distribution. For example,
+
+```{r}
+pnorm(1, mean = 0, sd = 1)
+```
+
+which matches what we expect from the 68-95-99.7 rule (try that calculation on your own!).
+
+Recall (from the previous Section of this tutorial) that our _p_-value looks pictorially like:
+
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vS4tRlyohKyNrNYPWIiaS_E0vf1-bbSWiLWlosSWV3onkFzunwFPO_LmD7SR14-gHbl-Ast-434a2Vi/pub?w=450">
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt4
+
+Use the `pnorm()` function to calculate the _p_-value from our Pet Ownership example. **Hint:** utilize the symmetry of the normal distribution.
+
+```{r tryIt4, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt4-solution}
+2 * pnorm(0.672, mean = 0.7, sd = SE)
+```
+</div>
+
+If you look up the help file for `pnorm()`, you will see that there is an optional argument called `lower.tail`. Setting `lower.tail = FALSE` calculates the area **to the right** of the specified input (as opposed to the area to the left). 
+
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vRM0vzilCxZRjkEGDR_PtfOYtAnNEYc9DH6Q3Jp1oc6bZpGOG_KJOyTg7wZrUQPjXSWC4RudlqR2zoO/pub?w=750">
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt5
+
+Recalculate the _p_-value from our Pet Ownership example, now passing in `lower.tail = FALSE` to your call to `pnorm()`. You will need to modify some of your other arguments as well (think critically about how to do that!)
+
+```{r tryIt5, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt5-solution}
+2 * pnorm(0.728, mean = 0.7, sd = SE, lower.tail = FALSE)
+```
+</div>
+
+### Approach 2: Using `prop_test()`
+
+The `pstat5lsSBI` package we have been using also contains a function called `prop_test()` that will calculate the value of the test statistic and the p-value for us. Professor Miller will show you this function briefly in lecture (if they haven't already!).
+
+You will need to send the function the following arguments:
+
+-   `x`: the number of "successes" in the sample
+-   `n`: the sample size
+-   `p`: the hypothesized population proportion
+-   `alternative`: where to shade (`"two.sided"`, `"less"`, `"greater"`)
+-   `conf.level` (optional): used to get a confidence interval (we will use this later)
+
+Going back to our Pet Ownership example, we are testing $H_0: p = 0.70 \text{ and } H_A: p \neq 0.70$. 
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt6
+
+Recalculate the _p_-value from our Pet Ownership example, now using the `prop_test()` function. Remember: you can always look up the help file for an `R` function you're unfamiliar with!
+
+```{r tryIt6, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt6-solution}
+prop_test(x = 504, 
+          n = 750, 
+          p = 0.70, 
+          alternative = "two.sided")
+```
+</div>
+
+
+### Approach 3: A Blast from the Past
+
+There is yet another way we can calculate _p_-values: using `simulate_chance_model()`! (Remember this from before Exam 01?) 
+
+Using the `simulate_chance_model()` function, we can generate 1000 simulated proportions of pet owners in samples of size 750:
+
+```{r}
+set.seed(501)
+prop_pet_owners <- simulate_chance_model(chanceSuccess = 0.7,
+                                    numDraws = 750,
+                                    numRepetitions = 1000)
+```
+
+Because we've adopted a two-sided alternative, our _p_-value captures the probability of observing a sample proportion of $0.672$ or lower **OR** $0.7 + (0.7 - 0.672) = 0.728$ or more.
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt7
+
+Calculate the estimated _p_-value using the `prop_pet_owners` proportions. It may be useful to review some of the Lab03 work you did.
+
+```{r tryIt7, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt7-solution}
+(length(which(prop_pet_owners <= 0.672)) + length(which( prop_pet_owners >= 0.728))) / 1000
+```
+</div>
+
+
+### Comparing _p_-Values
+
+To recap, we have *three* ways to compute the p-value for a one proportion hypothesis test:
+
+1.  Create a set of simulated proportions using `simulate_chance_model()`, then using the histogram of these simulated proportions to find the p-value 
+2.  Compute the $\mu$ and $\sigma$ for the approximate normal distribution and then use the `pnorm()` function.
+3.  Use the `prop_test()` function (which also uses normal theory) 
+
+Each of these will produce a slightly different result. **No need to worry about how close the values should be, or which value is "best".**
+
+Let's close out this example by formulating our conclusion. 
+
+> Since the p-value of 0.094 is greater than $\alpha = 0.05$, we fail to reject the null hypothesis. We don't have enough evidence to suggest that the proportion of households with pets has changed from the 70\% during the pandemic.
+
+
+## From Testing to Estimation
+
+Hypothesis tests are great, but what if we:
+
+- are interested in estimating the population proportion (and not in testing a specific value)?
+- we have rejected $H_0$ in a hypothesis test and would like to find reasonable values for the population proportion?
+
+In these situations, we generate a **confidence interval**. Essentially, a confidence interval is a range of _plausibe_ values for a parameter, based on some data we've collected. For the purposes of this class, our confidence intervals will always be of the form
+\begin{align*}
+  \textbf{CI}   & = \textbf{Point Estimate} \pm (\textbf{Critical Value} \times \textbf{Standard Error}) \\
+                & = \text{(Best Guess)} \pm \text{(Margin of Error)}
+\end{align*}
+
+The **critical value** is a constant determined by our **confidence level**, which is basically a measure of _how_ plausible our "plausible range of values" (i.e. our confidence interval) is. The exact relationship between the critical value and the confidence level will be explored in the final section of this lab tutorial.
+
+
+### Conditions for a Confidence Interval 
+
+As with hypothesis tests, we need to check both the **Independence** and **Success-Failure** conditions to determine if we can use the normal distribution to model the sampling distribution of $\hat{p}$.
+
+The change for confidence intervals is that we check the Success-Failure condition using $\hat p$:
+
+$$ \textbf{Success-Failure: } \text{Both $n \hat p$ and $n (1 - \hat{p})$ must be at least 10.}$$
+
+(Basically, we don't even have a $p_0$ value anymore, like we did in the case of hypothesis testing!)
+
+
+
+### Approach 1: Calculating the CI by Hand
+
+A confidence interval for $p$ is
+$$\hat{p} \pm z^{\ast} \sqrt{\frac{\hat{p} (1 - \hat{p})}{n}}$$
+where $z^*$ is the **critical value**. For CIs for proportions, we have a handy table of common critical values
+
+|  Confidence Level  |       $z^{\ast}$   |
+| :----------------: | :----------------: |
+| 90%                | 1.645              |
+| 95%                | 1.960              |
+| 98%                | 2.326              |
+| 99%                | 2.576              |
+
+### Approach 2: Using `prop_test()`
+
+The output from `prop_test()` also provides a confidence interval for the population proportion. By default, R gives us a 95% confidence interval. We need to specify `x` (number of successes), `n` (sample size), and the confidence level if we want something other than a 95\% CI.
+
+### Example: The "Invisible Gorilla" Study
+
+In a famous study, participants watch a video of people passing a basketball and are told to count the number of passes. During the video, a person in a gorilla suit walks across the court, stops to beat their chest, and walks off.
+
+In a recent replication of this experiment with a group of 150 college students, only 66 students noticed the gorilla. We'll work through the exercise of building a 98\% confidence interval for the population proportion of college students who would notice the gorilla.
+
+#### Checking Conditions
+
+First we check the conditions. Take a moment to think about whether you think the conditions are satisfied; then, when you're ready, click "Show Answers" to see some sample solutions.
+
+<details>
+<summary>`r fontawesome::fa("lightbulb")` **Show Answers** Click to Expand!</summary>
+
+-   **Independence:** We were not told that this is a random sample of students. However, the students did not know the purpose of the study, so it's reasonable to think that whether or not a student noticed the gorilla was independent of whether or not any other student noticed the gorilla. (Note that you might have a different opinion! That's okay, just explain your reasoning.)
+
+-   **Success-Failure:** Since $n \hat p = 66$ and $n (1 - \hat p) = 150 - 66 = 84$ are both greater than 10, this condition is satified.
+
+</details>
+
+#### Center of the Confidence Interval
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt8
+
+Calculate the center of a Confidence Interval (CI) for _p_, the true proportion of college students who would notice the Gorilla. Assign your answer to a variable called `ci_center`.
+
+```{r tryIt8, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt8-solution}
+ci_center <- 66/150
+```
+</div>
+
+#### Standard Error of the Estimator
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt9
+
+Calculate the standard error of the estimator used to construct a CI for _p_, and assign this result to a variable called `ci_se`.
+
+```{r tryIt9, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt9-solution}
+ci_se <- sqrt((66/150) * (1 - 66/150) / 150)
+```
+</div>
+
+
+#### Constructing a Confidence Interval
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt10
+
+Combine your answers from the previous few `TryIt` exercises and construct a 98\% confidence interval for the true proportion of college students who would notice the gorilla. \
+
+**Hint:** You'll want to display your interval as a list of two numbers, of the form `(lower upper)`. Remember (from Lab01), to get a list of numbers in `R`, use the `c()` function.
+
+```{r tryIt10, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt10-solution}
+c(ci_center - 2.326 * ci_se,
+  ci_center + 2.326 * ci_se
+)
+```
+</div>
+
+With any luck, you should have obtained an interval of approximately $(0.3458 \ , \ 0.5342)$. We'll talk about interpreting this interval in the next section. For now, let's close out this section by recalculating our CI using the `prop_test()` function.
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt11
+
+Use the `prop_test()` function to obtain a 98\% confidence interval for the true proportion of college students who would notice the gorilla. **Hint:** look up the help file for the `prop_test()` function, and pay special attention to the `conf.level` argument.
+
+```{r tryIt11, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt11-solution}
+prop_test(x = 66, 
+          n = 150, 
+          conf.level = 0.98)
+```
+</div>
+
+#### Interpreting the Interval
+
+Recall that a confidence interval essentially provides a range of _plausible_ values for a population parameter, given some data. So, one way to interpret our interval $(0.346 \ , \ 0.534)$ is:
+
+> We estimate (at the 98\% confidence level) that the population proportion of college students who would notice the gorilla is between 0.346 and 0.534.
+
+## One More Example
+
+X, the social media platform formerly known as Twitter, saw a name change and policy changes once it was under new ownership. Shortly after the name change, seventy-five percent (75%) of all X users said that they planned to keep using X in 2024. Researchers at X would like to know if this rate differs for Millennials, those born between 1981 and 1996. A random sample of 100 Millennial users of X revealed that 65% planned to keep using X in 2024.
+
+If the rate of current Millennial users of X is the same as the rate for all X users, how many Millennial users of X from the sample of 100 would we expect to say that they planned to keep using X in 2024?
+
+<details>
+<summary>`r fontawesome::fa("lightbulb")` **Show Answers** Click to Expand!</summary>
+We would expect 65 to keep using X in 2024.
+</details>
+
+\
+
+The researchers at X wanted to know if the rate of Millennials who planned to continue using X in 2024 differs from the rate of all users of X. The researcher in charge accidentally ran a using the following code and output:
+
+```{r incorrect_alternative}
+prop_test(x = 65, 
+          n = 100, 
+          p = 0.75, 
+          alternative = "less")
+```
+
+**What's the mistake here?** Think about the answer to that question; then, when you're ready, click "Show Answers" to see the answers.
+
+<details>
+<summary>`r fontawesome::fa("lightbulb")` **Show Answers** Click to Expand!</summary>
+We should have used a two-sided alternative, whereas the code uses a lower-tailed alternative.
+</details>
+
+\
+
+The value of the test statistic for the incorrect alternative was $z = -2.309$. **What should the test statistic be for the correct two-sided test?** Think about the answer to that question; then, when you're ready, click "Show Answers" to see the answers.
+
+<details>
+<summary>`r fontawesome::fa("lightbulb")` **Show Answers** Click to Expand!</summary>
+The test statistic will not change (the number of successes, sample size, and hypothesized proportion all remain the same).
+
+By the way, you've found the "secret instruction" for this Lab Tutorial! In your Post-Lab, where it says "Spring 2026", replace that with your favorite species of bird (feel free to look some up if you like!). A gentle reminder: failure to do so will incur a 0.25 point penalty.
+</details>
+
+\
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt12
+
+The _p_-value for the incorrect alternative was 0.01046. What should the _p_-value be for the correct two-sided test?
+
+```{r tryIt12, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt12-solution}
+2 * 0.01046
+```
+</div>
+
+## More on the Critical Value
+
+Recall our formula for the Confidence Interval for a proportion:
+$$ \hat{p} \pm z^{\ast} \sqrt{\frac{\hat{p} (1 - \hat{p})}{n}}$$
+where we called $z^{\ast}$ the "critical value". We've already  seen (and will see again in lecture) that the critical value is the multiplier determined by the desired confidence level; that is, it is the way we incorporate our confidence _level_ into our confidence _interval_. A few sections ago in this tutorial, we gave you a table with some common confidence levels and their associated critical values. What do we do if we want to use a confidence level that _doesn't_ appear in that table?
+
+The answer is: we use `R`! We'll need to ease our way into that first, though. Let's start by taking a step back and discussing **percentiles.**
+
+### Percentiles
+
+We define the _q_^th^ percentile of a Normal Distribution to be the value $x_q$ such that the area underneath the normal curve to the left of $x_q$ is _q_. 
+
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vSe10jzPIytNMp9WEwvmczgmyzjmTDRuwOnYnXE-vvjm1qza4WHjtzfq3ODVAxZiDxRXqEV4t_HfIz2/pub?w=350">
+
+For example, the 80^th^ percentile (_q_ = 0.8) is the value $x_{80}$ such that 80\% of the area underneath the appropriate normal curve lies to the left. 
+
+**Food for Thought:** What's another name for the 50^th^ percentile?
+
+<details>
+<summary>`r fontawesome::fa("lightbulb")` **Show Answers** Click to Expand!</summary>
+
+By definition, the 50^th^ percentile is the value such that 50\% of the data lies to the left, which is precisely the definition of the **median**.
+</details>
+
+\
+
+To get the percentiles of a Normal Distribution, we use the `qnorm()` function. 
+
+<img src="https://docs.google.com/drawings/d/e/2PACX-1vTCS6vX8AS8SJ2c8koRFDnKEy4unoldnmjds5HQop_YHAOxr19AI323NqjdbQx13CYsINh33N2WnvqQ/pub?w=450">
+
+<div style="background-color:#eaf0e4">
+### `r fontawesome::fa("question")` If You're Curious
+
+Why is the **p**ercentile function called **q**`norm` and not **p**`norm`? Well, for one thing: `pnorm()` is already a function, one that gives **p**robabilities under the normal curve. Also, percentiles are sometimes called **quantiles**, which perhaps makes the choice of `qnorm()` for our *q*uantile function make a little more sense.
+</div>
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt13
+
+Calculate te 84^th^ percentile of the standard normal distribution. Check that this matches (or, at least, is close to) what you would have calculated by hand, using the 68-95-99.7 Rule.
+
+```{r tryIt13, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt13-solution}
+qnorm(0.84, mean = 0, sd = 1)
+```
+</div>
+
+### Tying This Into Confidence Intervals
+
+Without getting into the details just yet (we'll save that for later in the course), here's the gist of things: if you want to use a _c_ confidence level (where _c_ represents a value between 0 and 1; e.g. a 95\% confidence itnerval takes _c_ = 0.95), then the critical value you should use is the $\left(\frac{p + 1}{2} \right)$^th^ percentile of the standard normal distribution. For example, to construct a 95\% confidence interval, we use
+```{r}
+qnorm((0.95 + 1)/2, mean = 0, sd = 1)
+```
+
+
+<div style="background-color:#dfedf7">
+### `r fontawesome::fa("laptop-code")` TryIt14
+
+Consider again the X example from the previous Section of this Lab Tutorial, where where researchers were interested in the parameter _p_, defined to be true proportion of Millenials who would keep using X in 2024. A random sample of 100 Millennial users of X revealed that 65% planned to keep using X in 2024. 
+
+**First:** Based on what you know about the 68-95-99.7 Rule, what (approximately) do you think the critical value for a 72\% confidence interval for _p_ would be?
+
+<details>
+<summary>`r fontawesome::fa("lightbulb")` **Show Answers** Click to Expand!</summary>
+First note that $(1 + 0.72) / 2 = 0.86$. Therefore, the critical value would be the 86^th^ percentile of the standard normal distribution. The 68-95-99.7 Rule tells us that the 84^th^ percentile of the standard normal distribution is around $1.00$, meaning we would expect the critical value for the 72\% confidence interval to be a bit greater than $1.00$. Indeed, 
+
+```{r}
+qnorm((1 + 0.72) / 2, mean = 0, sd = 1)
+```
+
+</details>
+
+\
+
+**Then:** Construct a 72\% confidence interval for _p_, using `qnorm()` to calculate the critical value (i.e. do **NOT** use `prop_test()`).
+
+```{r tryIt14, exercise = TRUE, error = T}
+## Replace this line with your answers
+```
+
+```{r tryIt14-solution}
+0.65 + qnorm((1 + 0.72)/2, mean = 0, sd = 1) * sqrt(0.65 * (1 - 0.65)/100) * c(-1, 1)
+```
+</div>
+
+
+## What's Next?
+
+Congrats on finishing the Lab04 Tutorial! Here's what you need to do next.
+
+1)    Navigate to the Lab04 folder on the PSTAT 5LS JupyterHub Server
+2)    Make a copy of the file called `lab04_postlab.Rmd`; rename your copy `lab04_NETID_postlab.Rmd` where you replace `NETID` with your NetID (for example, my file would be called `lab04_epmarzban_postlab.Rmd` since my NetID is `epmarzban`)
+3)    Fill out your copy of the Lab 04 Post-Lab. (Remember: there was a "secret" instruction for your post-lab somewhere in this lab tutorial!)
+
