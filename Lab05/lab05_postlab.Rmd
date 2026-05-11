@@ -1,0 +1,70 @@
+---
+title: "Lab 05 Post-Lab"
+author: "Your Name Here"
+date: "Spring 2026"
+output: pdf_document
+header-includes:
+  - \usepackage{mdframed}
+urlcolor: purple
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+Welcome to the Lab 05 Post-Lab! **Please note:** to encourage further interaction with the associated Lab Tutorial, this Post-Lab will be a little different than previous Post-Labs. Please follow all instructions outlined below fully, as failure to do so may incur point penalties. 
+
+### \textcolor{blue}{Tasks to Complete}
+
+-   Below, type the code you used to generate the confidence interval in the `TryIt10` exercise on the Lab 05 Tutorial. Assume the `xbar_gentoo`, `sd_gentoo`, `n_gentoo`, and `cv_gentoo` variables have already been defined. **Failure to complete this will incur a 0.1 point penalty.**
+
+```{r, eval = FALSE}
+Replace this line with your code.
+```
+
+\
+
+-   Carry out the secret instruction below. **Failure to complete this will incur a 0.15 point penalty.**
+
+\begin{mdframed}
+
+Replace this line with your text.
+
+\end{mdframed}
+
+\
+
+### Three Things I learned in Lab 05 are:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+### Three Questions I have after completing Lab 05 are:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+### Three R Functions I learned in Lab 05 are:
+
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+-   _Replace this line with your text_
+
+
+
+## Instructions for Submitting
+
+After filling out the above three sections:
+
+1)    Replace "Your Name Here" at the top of this document with your full name (as it appears on Canvas). 
+
+2)    Click "knit" at the top of your RStudio window (there should be an icon that looks like a ball of yarn). This will turn your document into a PDF
+
+3)    Follow the instructions under the "Downloading a PDF" Section of [this](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) document to download your PDF to your computer.
+
+4)    Upload the PDF of your work to Gradescope **by 11:59pm on Wednesday May 13, 2026**.
+
