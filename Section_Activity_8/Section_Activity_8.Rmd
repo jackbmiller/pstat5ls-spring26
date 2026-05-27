@@ -1,0 +1,194 @@
+---
+title: "Section Activity 8"
+subtitle: "Doctor, Doctor!"
+author: "Your Name Here"
+date: "Spring 2026"
+output: pdf_document
+header-includes:
+  - \usepackage{mdframed}
+urlcolor: purple
+toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=5.5, fig.height=4) 
+```
+
+\
+
+\begin{mdframed}
+
+\textcolor{red}{\textbf{Today's Codeword is:}}
+
+\end{mdframed}
+
+## Overview
+
+Welcome this week's Section Activity! Unlike previous Section Activities, this one will ask you to do some calculations in `R`. Though we have provided some guidance in this document, your TA will still help walk you through the various steps.
+
+
+## Re-Introduction to the Data
+
+On Exam 2, we explored a subset of a dataset pertaining to 7,908 colorectal surgeries performed at the Cleveland Clinic between 2009 and 2014. In this activity, we will work with the data\footnote{Data sourced from \url{https://cmustatistics.github.io/data-repository/medicine/core-temperature.html}; original paper is located at \url{https://doi.org/10.1016/j.jclinane.2020.109758}} further. Specifically, the version of the data we are exploring this week (found in a file called `surgery_data.csv`), contains the following variables:
+
+-   **`Year`**: the year in which the surgery took place
+-   **`Age`**: the age of the patient
+-   **`Sex`**: the sex of the patient (note that this has only been encoded as either `Male` or `Female`)
+-   **`BMI`**: the Body Mass Index of the patient
+-   **`Obese`**: whether or not the patient is Obese (`1` = yes, `0` = no)
+-   **`DrugUse`**: whether or not the patient abuses drugs (`1` = yes, `0` = no)
+-   **`SurgDuration`**: duration of the surgery in minutes
+-   **`Open`**: whether or the surgery was open (`1`) or laproscopic (`0`)
+-   **`AnyInfection`**: whether or not the patient developed an infection (`1` = yes, `0` = no)
+-   **`TWATemp`**: a measure of the patient's core body temperature (in Centigrade) during surgery
+-   **`DurationHosp`**: the duration (in days) of the patient's stay in the hospital post-surgery
+-   **`LOS`**: the entire duration (in days) of the patient's stay at the hospital, both before and after surgery
+
+
+```{r}
+surgery_data <- read.csv("surgery_data.csv")
+```
+
+## Part I: Setup
+
+Most research projects begin with a research question - so let's start there. 
+
+### \textcolor{blue}{\textbf{Question 1:}} Work with your TA as a group to come up with a research question related to comparing two population means, based on the Data Dictionary provided above. Then, fill out the information in the following bullet points:
+
+-   Our research question is:
+
+-   The Parameter of Interest is:
+
+-   The Null Hypothesis is:
+
+-   The Alternative Hypothesis is:
+
+-   Our significance level is:
+
+\textcolor{red}{\textbf{NOTE:}} You may find it useful to review the section titled "Math Syntax" on Homework 4 for tips on how to write down mathematical symbols. Kindly note that we expect all mathematical symbols to render properly.
+
+---
+
+Now that we've settled on a question, we'll start transitioning into our statistical inferences to _answer_ the question. It's typically a good idea to perform what is known as **Exploratory Data Analysis** (EDA). For the purposes of this activity, we'll stick with simply generating a side-by-side boxplot to get a sense of what we expect the answer to our question will be. **Note:** it is still important we "let the data speak for itself!" The point of EDA is _not_ to draw and definitive conclusions - that's what statistical inference is for. Rather, EDA is, as the name suggests, merely to help us _explore_ the dataset a bit before diving into our calculations. 
+
+### \textcolor{blue}{\textbf{Question 2:}} Generate a side-by-side boxplot to address the research question of interest.
+
+```{r error = TRUE}
+## Fill in the rest of this code to generate the requisite side-by-side boxplot
+boxplot()
+```
+
+
+Our next step will be to check the relevant conditions for inference. However, it may prove useful to first subset (divide) our dataset into two, based on the groups indicated in our research question of interest. 
+
+### \textcolor{blue}{\textbf{Question 3:}} Create two datasets, one containing observations only of observational units in Group 1 and another containing observations only of observational units in Group 2. 
+
+As a hint: we did this exact same operation in Lab 05, using the `subset()` function.
+
+```{r error = TRUE}
+test.stat <- 
+
+## Don't edit beyond here; this line just prints the value of the test statistic
+test.stat
+```
+
+---
+
+### \textcolor{blue}{\textbf{Question 4:}} Check the relevant conditions for inference.
+
+\textbf{Independence:} 
+
+
+\
+
+\textbf{Normality:} 
+
+```{r}
+## Here is a blank code chunk you can copy-paste and edit as necessary.
+```
+
+**Hint:** consider how histograms may be useful for this question, and recall that the `hist()` function helps us generate histograms in `R`.
+
+---
+
+## Part II: Inference
+
+Alright, it's time for inference! Here's the gameplan: we'll start by performing our inference "by hand", and then we'll check our results against the `t.test()` function. 
+As Professor Miller mentioned in lecture, when calculating a test statistic by hand, it's often a good idea to calculate the constituent parts separately, assign them to variable names, and then combine them at the end. Let's get some practice with that.
+
+### \textcolor{blue}{\textbf{Question 5:}} Fill in the missing parts in the code below to calculate $\bar{x}_1$, $\bar{x}_2$, $s_1$, $s_2$, $n_1$, and $n_2$. Remember, it is up to you to remember what these quantities mean in the context of the research question of interest!
+
+```{r error = TRUE}
+xbar_1 <- mean()
+xbar_2 <- mean()
+
+s1 <- sd()
+s2 <- sd()
+
+n1 <- length()
+n2 <- length()
+```
+
+---
+
+### \textcolor{blue}{\textbf{Question 6:}} Calculate the value of the test statistic, using the variables you created in Question 4 above.
+
+```{r error = TRUE}
+test.stat <- 
+
+## Don't edit beyond here; this line just prints the value of the test statistic
+test.stat
+```
+
+**Hint:** `/` calculates fractions, `^` calculates powers, and `sqrt()` calculates the square root.
+
+---
+
+### \textcolor{blue}{\textbf{Question 7:}} Calculate the $p-$value.
+
+As a hint: the function `min()` calculates the minimum of two numbers; e.g. `min(x, y)` will calculate the minimum of `x` and `y`.
+
+```{r}
+## Replace this line with your code; remember to delete the double hashtags (##)!
+```
+
+
+---
+
+### \textcolor{blue}{\textbf{Question 8:}} State the conclusions of the test.
+
+Remember that you should include:
+
+-   whether to reject or fail to reject the null
+-   whether the results were statistically significant or not
+-   a conclusion in the context of the problem. \
+
+**My Conclusions are:** 
+
+_Replace this line with your conclusions._
+
+---
+
+Since we have access to the data, we can use the `t.test()` function to check our work.
+
+### \textcolor{blue}{\textbf{Question 9:}} Conduct the test using the `t.test()` function, and comment on whether the results agree with what we did "by hand" above.
+
+```{r, error = TRUE}
+t.test()
+```
+
+---
+
+## Instructions for Submitting
+
+After filling out the above sections:
+
+1)    Replace "Your Name Here" at the top of this document with your full name (as it appears on Canvas). 
+
+2)    Click "knit" at the top of your RStudio window (there should be an icon that looks like a ball of yarn). This will turn your document into a PDF
+
+3)    Follow the instructions under the "Downloading a PDF" Section of [this](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) document to download your PDF to your computer.
+
+4)    Upload the PDF of your work to Gradescope **by 11:59pm on Friday May 29, 2026**
+
