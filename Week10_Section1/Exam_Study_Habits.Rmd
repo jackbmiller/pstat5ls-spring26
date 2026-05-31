@@ -1,0 +1,73 @@
+---
+title: "Final Exam Study Reflection"
+subtitle: "Week 10, Section 1"
+author: "Your Name Here"
+date: "Spring 2026"
+output: pdf_document
+header-includes:
+  - \usepackage{mdframed}
+urlcolor: purple
+toc: TRUE
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(fig.width=5.5, fig.height=4) 
+```
+
+\
+
+\begin{mdframed}
+
+\textcolor{red}{\textbf{Today's Codeword is:}}
+
+\end{mdframed}
+
+---
+
+### Study Habits
+
+-   The amount of time I've spent studying for the final so far is:
+
+-   The approximate percentage of lectures I've attended is:
+
+-   The approximate percentage of sections I've attended is:
+
+### Three Things I Feel I've Mastered In This Class So Far are:
+
+-   _Replace this line with your text_
+
+-   _Replace this line with your text_
+
+-   _Replace this line with your text_
+
+
+### Three Things I'm Apprehensive About for the Final Exam Are:
+
+
+-   _Replace this line with your text_
+
+-   _Replace this line with your text_
+
+-   _Replace this line with your text_
+
+### If I Had to Convince a Friend to Take PSTAT 5LS, Here's What I Would Say:
+
+_Replace this line with your text_
+
+
+
+---
+
+## Instructions for Submitting
+
+After filling out the above sections:
+
+1)    Replace "Your Name Here" at the top of this document with your full name (as it appears on Canvas). 
+
+2)    Click "knit" at the top of your RStudio window (there should be an icon that looks like a ball of yarn). This will turn your document into a PDF
+
+3)    Follow the instructions under the "Downloading a PDF" Section of [this](https://docs.google.com/document/d/12SKM9YPDtStpjVptOvMjVIGZjQcaJFIa_DhJMXE4mMQ/edit?usp=sharing) document to download your PDF to your computer.
+
+4)    Upload the PDF of your work to Gradescope **by 11:59pm on Wednesday June 3, 2026**
+
